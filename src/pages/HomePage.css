@@ -1,0 +1,10 @@
+.title {
+    color: #1c1e21;
+    margin-bottom: 30px;
+}
+
+.profiles-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}

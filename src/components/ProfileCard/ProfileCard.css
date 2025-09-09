@@ -36,3 +36,7 @@
 .profile-socials a:hover{
     text-decoration: underline;
 }
+
+.App-dark .profile-card{
+    background-color: #47494b;
+}

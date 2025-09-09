@@ -1,63 +1,55 @@
-import './App.css';
-import Counter from './Counter';
-import CustomForm from './CustomForm';
-import ProfileCard from './ProfileCard';
-import UserList from './UserList';
+import { Link, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import UserPage from "./pages/UserPage";
+import DetailsPage from "./pages/DetailsPage";
+import { useEffect, useState } from "react";
+import { ThemeContext } from "./contexts/ThemeContext";
+import "./App.css";
 
-const users = [
-  {
-    name: 'Alice Martin',
-    image: 'https://i.pravatar.cc/150?u=alice',
-    description: 'Dévelopeuse frontend spécialisée en React et amatrice de café',
-    socialNetworks: {
-      linkedin: 'https://www.linkedin.com/in/alice-martin/',
-      github: 'https://github.com/alice'
-    }
-  },
-  {
-    name: 'Bob Durand',
-    image: 'https://i.pravatar.cc/150?u=bob',
-    description: 'Architecte Backend, passioné par les microservices.',
-    socialNetworks: {
-      linkedin: 'https://www.linkedin.com/in/bob-durand/',
-      github: 'https://github.com/bob'
-    }
-  },
-  {
-    name: 'Claire Petit',
-    image: 'https://i.pravatar.cc/150?u=claire',
-    description: 'Designer UI/UX, transforme des idées complexes en interfaces simples.',
-    socialNetworks: {
-      linkedin: 'https://www.linkedin.com/in/claire-petit/',
-      github: 'https://github.com/claire'
-    }
-  },
-   {
-    name: 'John Doe',
-    image: 'https://i.pravatar.cc/150?u=doe',
-    description: 'Architecte Backend, passioné par les microservices.',
-    socialNetworks: {
-      linkedin: 'https://www.linkedin.com/in/john-doe/',
-      github: 'https://github.com/doe'
-    }
-  },
-];
 function App() {
+  const [theme, setTheme] = useState("light");
+
+  // Récupération du thème par défaut dans le localStorage
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+  }, []);
+
+  const changeTheme = (status) => {
+    setTheme(status ? "dark" : "light");
+    localStorage.setItem("theme", status ? "dark" : "light");
+  };
+
   return (
-    <div className="App">
-      <h1 className='title'>Mon équipe</h1>
-       <div className='profiles-container'>
-        {
-          users.map(user => (<ProfileCard key={user.name} name={user.name} image={user.image} description={user.description} socialNetworks={user.socialNetworks} />))
-        }
-      </div>   
-      <hr/>
-      <Counter />  
-      <hr />
-      <CustomForm />
-      <hr />
-      <UserList/>
-    </div>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div className={theme === "light" ? "App" : "App-dark"}>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/users">Users</Link>
+          </li>
+        </ul>
+        <label class="switch">
+          <input
+            type="checkbox"
+            value={theme}
+            onChange={(e) => changeTheme(e.target.checked)}
+            checked={theme === "dark"}
+          />
+          <span class="slider round"></span>
+        </label>
+
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/users" element={<UserPage />} />
+          <Route path="/users/:id" element={<DetailsPage />} />
+        </Routes>
+      </div>
+    </ThemeContext.Provider>
   );
 }
 
