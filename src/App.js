@@ -2,6 +2,7 @@ import './App.css';
 import Counter from './Counter';
 import CustomForm from './CustomForm';
 import ProfileCard from './ProfileCard';
+import UserList from './UserList';
 
 const users = [
   {
@@ -53,7 +54,9 @@ function App() {
       <hr/>
       <Counter />  
       <hr />
-      <CustomForm/>
+      <CustomForm />
+      <hr />
+      <UserList/>
     </div>
   );
 }
